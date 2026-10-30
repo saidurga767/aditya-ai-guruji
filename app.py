@@ -68,7 +68,7 @@ with col2:
         with st.chat_message("assistant"):
             with st.spinner("💭 Guruji thinking..."):
                 q = f"You are Aditya AI Guruji, friendly BSc {subject} teacher. Explain simply with code example. Doubt: {prompt}"
-                res = client.models.generate_content(model="gemini-2.0-flash", contents=q)
+                res = client.models.generate_content(model="gemini-3.5-flash-lite", contents=q)
                 st.markdown(res.text)
                 st.session_state.messages.append({"role": "assistant", "content": res.text})
         st.rerun()
