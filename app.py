@@ -1,23 +1,25 @@
 import streamlit as st
-import google.generativeai as genai
+from google import genai
+
+# Secrets nundi key
+API_KEY = st.secrets["GOOGLE_API_KEY"]
+client = genai.Client(api_key=API_KEY)
 
 st.set_page_config(page_title="Aditya AI Guruji")
-st.title("📚 Aditya AI Guruji")
+st.title("Aditya AI Guruji 🤖")
 st.write("BSc Computer Science Doubt Solver - by Sai Durga")
 
-# NEE KEY IKKADA PASTE CHEYYI - quotes lopala
-API_KEY = "PASTE YOUR GEMINI KEY HERE"
-
-genai.configure(api_key=API_KEY)
-model = genai.GenerativeModel("gemini-1.5-flash")
-
-doubt = st.text_input("Nee Doubt Adugu (Ex: What is array?)")
+question = st.text_input("Nee Doubt Adugu:")
 
 if st.button("Ask Guruji 🔥"):
-    if doubt:
-        with st.spinner("Guruji alochistunnadu..."):
-            prompt = f"You are Aditya AI Guruji, friendly teacher for BSc CS students. Explain '{doubt}' in simple Telugu + English mix with example."
-            response = model.generate_content(prompt)
+    if question:
+        try:
+            response = client.models.generate_content(
+                model="gemini-2.0-flash",
+                contents=question
+            )
             st.success(response.text)
+        except Exception as e:
+            st.error(f"Error: {e}")
     else:
-        st.warning("Doubt type cheyyi Durga!")
+        st.warning("Question type cheyyi Durga!")
