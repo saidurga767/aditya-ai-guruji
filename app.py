@@ -1,19 +1,23 @@
 import streamlit as st
+import google.generativeai as genai
 
-st.set_page_config(page_title="Aditya AI Guruji", page_icon="🎓")
-st.title("🎓 Aditya AI Guruji")
-st.subheader("BSc CS Students ki AI Doubt Solver - by Sai Durga")
+st.set_page_config(page_title="Aditya AI Guruji")
+st.title("📚 Aditya AI Guruji")
+st.write("BSc Computer Science Doubt Solver - by Sai Durga")
 
-doubt = st.text_input("Nee Doubt Enti? (Ex: pointer, dbms, stack)")
+# NEE KEY IKKADA PASTE CHEYYI - quotes lopala
+API_KEY = "PASTE YOUR GEMINI KEY HERE"
 
-if st.button("Ask Guruji"):
-    if "pointer" in doubt.lower():
-        st.success("Pointer ante variable address ni store chese variable. Ex: int *p = &a;")
-    elif "dbms" in doubt.lower():
-        st.success("DBMS ante Database Management System. Data ni store, manage cheyadaniki use chestham.")
-    elif "stack" in doubt.lower():
-        st.success("Stack ante LIFO - Last In First Out. Ex: Plates stack.")
-    elif doubt == "":
-        st.warning("Doubt type cheyyi Sai Durga!")
+genai.configure(api_key=API_KEY)
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+doubt = st.text_input("Nee Doubt Adugu (Ex: What is array?)")
+
+if st.button("Ask Guruji 🔥"):
+    if doubt:
+        with st.spinner("Guruji alochistunnadu..."):
+            prompt = f"You are Aditya AI Guruji, friendly teacher for BSc CS students. Explain '{doubt}' in simple Telugu + English mix with example."
+            response = model.generate_content(prompt)
+            st.success(response.text)
     else:
-        st.info(f"'{doubt}' gurinchi Guruji alochistunnadu... Soon answer add chestham!")
+        st.warning("Doubt type cheyyi Durga!")
